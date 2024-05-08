@@ -119,6 +119,9 @@ esac
 install_zsh_plugins
 install_zsh_theme
 copy_zsh_config
+sed -i 's/\r$//' "$HOME/.zshrc"
+sed -i 's/\r$//' "$HOME/.p10k.zsh"
+sed -i 's/\r$//' "$HOME/.config/zsh/zshalias"
 
 # Installer FiraCode Nerd Font på alle distributioner
 install_firacode_nerd_font
