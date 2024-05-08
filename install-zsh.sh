@@ -41,7 +41,7 @@ function install_zsh_theme {
 function copy_zsh_config {
 	echo "kopiere Zsh config & Powerline10k config..."
 	cp ./zshrc ~/.zshrc
-	cp ./.p10k.zsh ~/
+	cp ./.p10k.zsh ~/.p10k.zsh
 }
 
 # Funktion til at installere FiraCode Nerd Font
@@ -103,3 +103,4 @@ echo "Installerer FiraCode Nerd Font..."
 install_firacode_nerd_font
 
 echo "Zsh er blevet installeret. Skift til Zsh med kommandoen: chsh -s \$(which zsh)"
+sudo chsh -s \$(which zsh)
