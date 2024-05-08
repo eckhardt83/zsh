@@ -103,4 +103,4 @@ echo "Installerer FiraCode Nerd Font..."
 install_firacode_nerd_font
 
 echo "Zsh er blevet installeret. Skift til Zsh med kommandoen: chsh -s \$(which zsh)"
-sudo chsh -s \$(which zsh)
+sudo chsh -s $(which zsh)
