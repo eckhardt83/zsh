@@ -28,12 +28,12 @@ function install_zsh_nixos {
 function install_zsh_plugins {
     echo "Installerer Zsh-plugins..."
     function install_plugins {
-        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-autosuggestions
-        git clone https://github.com/fdellwing/zsh-bat.git ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-bat
-        git clone https://github.com/ael-code/zsh-colored-man-pages.git ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-colored-man-pages
-        git clone https://github.com/Freed-Wu/zsh-colorize-functions.git ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-colorize-functions
-        git clone https://github.com/qoomon/zsh-lazyload.git ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-lazyload
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.config/zsh}/plugins/zsh-syntax-highlighting
+        git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh}/plugins/zsh-autosuggestions"
+        git clone https://github.com/fdellwing/zsh-bat.git "$HOME/.config/zsh}/plugins/zsh-bat"
+        git clone https://github.com/ael-code/zsh-colored-man-pages.git "$HOME/.config/zsh}/plugins/zsh-colored-man-pages"
+        git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh}/plugins/zsh-colorize-functions"
+        git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh}/plugins/zsh-lazyload"
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh}/plugins/zsh-syntax-highlighting"
         echo "Plugins er installeret, have a nice day :)"
     }
  
@@ -54,7 +54,7 @@ function install_zsh_plugins {
 # Funktion til at installere Zsh-theme
 function install_zsh_theme {
     echo "Installerer Zsh-theme..."
-    local theme_dir="${ZSH_CUSTOM:-~/.config/zsh}/theme"
+    local theme_dir="$HOME/.config/zsh/theme"
     echo "Installing Powerlevel10k theme..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$theme_dir/powerlevel10k"
     echo "Powerlevel10k theme er installeret."
@@ -72,7 +72,7 @@ function copy_zsh_config {
 function install_firacode_nerd_font {
     echo "Installerer FiraCode Nerd Font..."
     # Opret en midlertidig mappe for fontene
-    mkdir -p ~/.local/share/fonts
+    mkdir -p "$HOME/.local/share/fonts"
 
     # Download og installer FiraCode Nerd Font
     wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip &&
