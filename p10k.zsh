@@ -3,7 +3,7 @@
 # Wizard options: nerdfont-complete + powerline, small icons, classic, unicode, dark,
 # 24h time, vertical separators, sharp heads, flat tails, 2 lines, dotted, full frame,
 # sparse, many icons, concise, transient_prompt, instant_prompt=verbose.
-# Type `p10k configure` to generate another config.
+# Type `p10k configure` to generate another. config.
 #
 # Config for Powerlevel10k with classic powerline prompt style. Type `p10k configure` to generate
 # your own config based on it.
