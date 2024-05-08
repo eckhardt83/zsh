@@ -27,13 +27,13 @@ function install_zsh_nixos {
 # Funktion til at installere Zsh-plugins
 function install_zsh_plugins {
     echo "Installerer Zsh-plugins..."
-    ./install-zsh-plugins.sh
+    sudo ./install-zsh-plugins.sh
 }
 
 # Funktion til at installere Zsh-theme
 function install_zsh_theme {
     echo "Installerer Zsh-theme..."
-    ./install-zsh-theme.sh
+    sudo ./install-zsh-theme.sh
 }
 
 # Funktion til at kopiere Zsh konfiguration og Powerline10k konfiguration
@@ -93,7 +93,7 @@ esac
 install_zsh_plugins
 install_zsh_theme
 copy_zsh_config
-cp ./p10k.zsh ~/.p10k.zsh
+mv ./p10k.zsh ~/.p10k.zsh
 
 # Installer FiraCode Nerd Font på alle distributioner
 install_firacode_nerd_font
