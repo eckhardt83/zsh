@@ -66,6 +66,7 @@ function copy_zsh_config {
     cp ./zshrc "$HOME/.zshrc"
     echo "Kopierer Powerlevel10k konfiguration..."
     cp ./p10k.zsh "$HOME/.p10k.zsh"
+    cp ./zshalias "$HOME/.config/zsh/zshalias"
 }
 
 # Funktion til at installere FiraCode Nerd Font
