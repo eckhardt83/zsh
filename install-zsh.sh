@@ -1,44 +1,44 @@
 #!/bin/bash
 
 # Funktion til at installere Zsh på Ubuntu
-install_zsh_ubuntu() {
+function install_zsh_ubuntu {
     sudo apt update
     sudo apt install -y zsh
 }
 
 # Funktion til at installere Zsh på Fedora
-install_zsh_fedora() {
+function install_zsh_fedora {
     sudo dnf install -y zsh
 }
 
 # Funktion til at installere Zsh på Arch Linux
-install_zsh_arch() {
+function install_zsh_arch {
     sudo pacman -Sy --noconfirm zsh
 }
 
 # Funktion til at installere Zsh på NixOS
-install_zsh_nixos() {
+function install_zsh_nixos {
     sudo nix-env -iA nixos.zsh
 }
 
 # Funktion til at installere Zsh plugins
-install_zsh_plugins() {
+function install_zsh_plugins {
 	./install-zsh-plugins.sh
 }
 
 # Funktion til at installere Zsh theme
-install_zsh_theme() {
+function install_zsh_theme {
 	./install-zsh-theme.sh
 }
 
 # Funktion til at kopiere Zsh config Powerline10k config
-copy_zsh_config() {
+function copy_zsh_config {
 	cp ./zshrc ~/.zshrc
 	cp ./.p10k.zsh ~/
 }
 
 # Funktion til at installere FiraCode Nerd Font
-install_firacode_nerd_font() {
+function install_firacode_nerd_font {
     # Opret en midlertidig mappe for fontene
     mkdir -p ~/.local/share/fonts
 
