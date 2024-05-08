@@ -63,7 +63,7 @@ function install_zsh_theme {
 # Funktion til at kopiere Zsh konfiguration og Powerline10k konfiguration
 function copy_zsh_config {
     echo "Kopierer Zsh konfiguration..."
-    cp ./zshrc ~/.zshrc
+    cp ./zshrc "$HOME/.zshrc"
     echo "Kopierer Powerlevel10k konfiguration..."
     cp ./p10k.zsh "$HOME/.p10k.zsh"
 }
@@ -115,6 +115,7 @@ case $distro in
 esac
 
 # Installer Zsh-plugins, tema og kopier konfigurationer
+bruger = "$USER"
 install_zsh_plugins
 install_zsh_theme
 copy_zsh_config
@@ -124,6 +125,6 @@ install_firacode_nerd_font
 
 # Skift standard shell til Zsh
 echo "Skifter standard shell til Zsh..."
-chsh -s "$(which zsh)" "$USER"
+chsh -s "$(which zsh)" "$bruger"
 
 echo "Færdig!"
