@@ -2,37 +2,44 @@
 
 # Funktion til at installere Zsh på Ubuntu
 function install_zsh_ubuntu {
+	echo "Installerer zsh..."
     sudo apt update
     sudo apt install -y zsh
 }
 
 # Funktion til at installere Zsh på Fedora
 function install_zsh_fedora {
+	echo "Installerer zsh..."
     sudo dnf install -y zsh
 }
 
 # Funktion til at installere Zsh på Arch Linux
 function install_zsh_arch {
+	echo "Installerer zsh..."
     sudo pacman -Sy --noconfirm zsh
 }
 
 # Funktion til at installere Zsh på NixOS
 function install_zsh_nixos {
+	echo "Installerer zsh..."
     sudo nix-env -iA nixos.zsh
 }
 
 # Funktion til at installere Zsh plugins
 function install_zsh_plugins {
+	echo "Installerer zsh-plugins..."
 	./install-zsh-plugins.sh
 }
 
 # Funktion til at installere Zsh theme
 function install_zsh_theme {
+	echo "Installerer zsh-theme..."
 	./install-zsh-theme.sh
 }
 
 # Funktion til at kopiere Zsh config Powerline10k config
 function copy_zsh_config {
+	echo "kopiere Zsh config & Powerline10k config..."
 	cp ./zshrc ~/.zshrc
 	cp ./.p10k.zsh ~/
 }
@@ -49,32 +56,37 @@ function install_firacode_nerd_font {
 }
 
 
-# Identificer hvilken Linux-distribution der kører
-if [ -x "$(command -v lsb_release)" ]; then
-    distro=$(lsb_release -si)
+# Identificer hvilken Linux-distribution der kører ved at læse /etc/os-release
+if [ -r /etc/os-release ]; then
+    . /etc/os-release
+    if [ -n "$ID" ]; then
+        distro="$ID"
+    else
+        echo "Kan ikke identificere distributionen fra /etc/os-release."
+        exit 1
+    fi
 else
-    echo "lsb_release ikke tilgængelig. Kan ikke identificere distribution."
+    echo "/etc/os-release ikke tilgængelig. Kan ikke identificere distribution."
     exit 1
 fi
 
-# Installer Zsh baseret på distributionen
+# Installer Zsh og FiraCode Nerd Font baseret på distributionen
 case $distro in
-    Ubuntu)
+    ubuntu)
         echo "Installerer Zsh på Ubuntu..."
         install_zsh_ubuntu
         ;;
-    Fedora)
+    fedora)
         echo "Installerer Zsh på Fedora..."
         install_zsh_fedora
         ;;
-    Arch)
+    arch)
         echo "Installerer Zsh på Arch Linux..."
         install_zsh_arch
         ;;
-    NixOS)
+    nixos)
         echo "Installerer Zsh på NixOS..."
         install_zsh_nixos
-
         ;;
     *)
         echo "Kan ikke genkende distributionen: $distro"
