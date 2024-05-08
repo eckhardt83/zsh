@@ -28,12 +28,12 @@ function install_zsh_nixos {
 function install_zsh_plugins {
     echo "Installerer Zsh-plugins..."
     function install_plugins {
-        git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh}/plugins/zsh-autosuggestions"
+        git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh/plugins/zsh-autosuggestions"
         git clone https://github.com/fdellwing/zsh-bat.git "$HOME/.config/zsh}/plugins/zsh-bat"
-        git clone https://github.com/ael-code/zsh-colored-man-pages.git "$HOME/.config/zsh}/plugins/zsh-colored-man-pages"
-        git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh}/plugins/zsh-colorize-functions"
+        git clone https://github.com/ael-code/zsh-colored-man-pages.git "$HOME/.config/zsh/plugins/zsh-colored-man-pages"
+        git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh/plugins/zsh-colorize-functions"
         git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh}/plugins/zsh-lazyload"
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh}/plugins/zsh-syntax-highlighting"
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh/plugins/zsh-syntax-highlighting"
         echo "Plugins er installeret, have a nice day :)"
     }
  
@@ -45,7 +45,7 @@ function install_zsh_plugins {
         install_plugins
     else
         echo "Opretter plugin-mappe..."
-        mkdir -p "$DIR"
+        mkdir -p ~/.config/zsh/{plugins,theme}
         echo "Installerer plugins..."
         install_plugins
     fi
@@ -115,7 +115,7 @@ case $distro in
 esac
 
 # Installer Zsh-plugins, tema og kopier konfigurationer
-bruger = "$USER"
+
 install_zsh_plugins
 install_zsh_theme
 copy_zsh_config
@@ -125,6 +125,6 @@ install_firacode_nerd_font
 
 # Skift standard shell til Zsh
 echo "Skifter standard shell til Zsh..."
-chsh -s "$(which zsh)" "$bruger"
+chsh -s "$(which zsh)" "$USER"
 
 echo "Færdig!"
