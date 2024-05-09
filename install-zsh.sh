@@ -35,7 +35,10 @@ function install_zsh_plugins {
         git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh/plugins/zsh-lazyload"
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh/plugins/zsh-syntax-highlighting"
         git clone https://github.com/MenkeTechnologies/zsh-expand.git "$HOME/.config/zsh/plugins/zsh-expand"
-        echo "Plugins er installeret, have a nice day :)"
+        git clone https://github.com/akash329d/zsh-alias-finder "$HOME/.config/zsh/plugins/zsh-alias-finder"
+        git clone https://github.com/sparsick/ansible-zsh "$HOME/.config/zsh/plugins/ansible"
+        git clone https://github.com/valentinocossar/sublime.git "$HOME/.config/zsh/plugins/sublime"
+        git clone https://github.com/MichaelAquilina/zsh-auto-notify.git "$HOME/.config/zsh/plugins/zsh-auto-notify"
     }
  
     DIR="$HOME/.config/zsh/plugins"
@@ -101,6 +104,12 @@ case $distro in
     ubuntu)
         install_zsh_ubuntu
         ;;
+    debian)
+        install_zsh_ubuntu
+        ;;
+    popos)
+        install_zsh_ubuntu
+        ;;        
     fedora)
         install_zsh_fedora
         ;;
