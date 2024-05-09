@@ -36,10 +36,10 @@ fi
 
 ### Plugins ######
 source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-#source ~/.config/zsh/plugins/zsh-alias-finder/zsh-alias-finder.plugin.zsh
-#source ~/.config/zsh/plugins/ansible/ansible.plugin.zsh
-#source ~/.config/zsh/plugins/sublime/sublime.plugin.zsh
-#source ~/.config/zsh/plugins/zsh-auto-notify/auto-notify.plugin.zsh
+source ~/.config/zsh/plugins/zsh-alias-finder/zsh-alias-finder.plugin.zsh
+source ~/.config/zsh/plugins/ansible/ansible.plugin.zsh
+source ~/.config/zsh/plugins/sublime/sublime.plugin.zsh
+source ~/.config/zsh/plugins/zsh-auto-notify/auto-notify.plugin.zsh
 source ~/.config/zsh/plugins/zsh-bat/zsh-bat.plugin.zsh
 source ~/.config/zsh/plugins/zsh-colored-man-pages/colored-man-pages.plugin.zsh
 source ~/.config/zsh/plugins/zsh-colorize-functions/zsh-colorize-functions.plugin.zsh
