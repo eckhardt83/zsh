@@ -34,6 +34,7 @@ function install_zsh_plugins {
         git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh/plugins/zsh-colorize-functions"
         git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh/plugins/zsh-lazyload"
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh/plugins/zsh-syntax-highlighting"
+        git clone https://github.com/MenkeTechnologies/zsh-expand.git "$HOME/.config/zsh/plugins/zsh-expand"
         echo "Plugins er installeret, have a nice day :)"
     }
  
