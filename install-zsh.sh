@@ -146,11 +146,17 @@ echo "7. Colored Man Pages"
 echo "8. Colorize Functions"
 echo "9. Lazyload"
 echo "10. Syntax Highlighting"
+echo "11. All Plugins"
 
-read -p "Enter the numbers of the plugins you want to install (e.g., '1 3 10'): " PLUGIN_CHOICES
+read -p "Enter the numbers of the plugins you want to install (e.g., '1 3 10' or '11' for all): " PLUGIN_CHOICES
 
 # Convert input string into an array of plugin numbers
 IFS=' ' read -ra PLUGIN_ARRAY <<< "$PLUGIN_CHOICES"
+
+# Check if user selected all plugins
+if [[ " ${PLUGIN_ARRAY[@]} " =~ " 11 " ]]; then
+    PLUGIN_ARRAY=(1 2 3 4 5 6 7 8 9 10)
+fi
 
 # Load selected plugins based on user input
 for plugin_num in "${PLUGIN_ARRAY[@]}"; do
@@ -182,3 +188,5 @@ sed -i 's/\r$//' "$HOME/.p10k.zsh"
 sed -i 's/\r$//' "$HOME/.config/zsh/zshalias"
 install_firacode_nerd_font
 chsh -s "$(command -v zsh)" "$USER"
+
+echo "Setup complete."
