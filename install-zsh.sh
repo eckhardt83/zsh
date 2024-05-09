@@ -106,6 +106,9 @@ case $distro in
     arch)
         install_zsh_arch
         ;;
+    arcolinux)
+        install_zsh_arch
+        ;;
     nixos)
         install_zsh_nixos
         ;;
