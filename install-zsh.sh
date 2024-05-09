@@ -107,19 +107,15 @@ fi
 # Determine package manager based on Linux distribution
 case $LINUX_DISTRO in
     ubuntu | linuxmint | debian | elementary | popos)
-        PLUGIN_DIR=~/.config/zsh/plugins
         PACKAGE_MANAGER="apt"
         ;;
     fedora | rhel | centos | rocky)
-        PLUGIN_DIR=~/.config/zsh/plugins
         PACKAGE_MANAGER="dnf"
         ;;
     arch | arcolinux | manjaro | endeavouros | archbang | artix)
-        PLUGIN_DIR=~/.config/zsh/plugins
         PACKAGE_MANAGER="pacman"
         ;;
     nixos)
-        PLUGIN_DIR=~/.config/zsh/plugins
         PACKAGE_MANAGER="nix-env -i"
         ;;
     *)
@@ -128,11 +124,29 @@ case $LINUX_DISTRO in
         ;;
 esac
 
-# Ensure Git is installed (required for fetching plugin sources)
+# Ensure Git is installed
 if ! command -v git &> /dev/null; then
     echo "Git is required but not installed. Installing Git..."
     sudo $PACKAGE_MANAGER install git
 fi
+
+# Clone necessary plugins from GitHub
+mkdir -p "$HOME/.config/zsh/plugins"
+cd "$HOME/.config/zsh/plugins" || exit
+
+git clone https://github.com/zsh-users/zsh-autosuggestions
+git clone https://github.com/fdellwing/zsh-bat.git
+git clone https://github.com/ael-code/zsh-colored-man-pages.git
+git clone https://github.com/Freed-Wu/zsh-colorize-functions.git
+git clone https://github.com/qoomon/zsh-lazyload.git
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+git clone https://github.com/MenkeTechnologies/zsh-expand.git
+git clone https://github.com/akash329d/zsh-alias-finder
+git clone https://github.com/sparsick/ansible-zsh
+git clone https://github.com/valentinocossar/sublime.git
+git clone https://github.com/MichaelAquilina/zsh-auto-notify.git
+
+echo "Plugins are installed successfully."
 
 # Prompt user to select plugins for installation
 echo "Available plugins:"
@@ -146,14 +160,14 @@ echo "7. Colored Man Pages"
 echo "8. Colorize Functions"
 echo "9. Lazyload"
 echo "10. Syntax Highlighting"
-echo "11. All Plugins"
+echo "11. Install All"
 
 read -p "Enter the numbers of the plugins you want to install (e.g., '1 3 10' or '11' for all): " PLUGIN_CHOICES
 
 # Convert input string into an array of plugin numbers
 IFS=' ' read -ra PLUGIN_ARRAY <<< "$PLUGIN_CHOICES"
 
-# Check if user selected all plugins
+# If "11" (Install All) is selected, set PLUGIN_ARRAY to all available plugin numbers
 if [[ " ${PLUGIN_ARRAY[@]} " =~ " 11 " ]]; then
     PLUGIN_ARRAY=(1 2 3 4 5 6 7 8 9 10)
 fi
@@ -161,23 +175,20 @@ fi
 # Load selected plugins based on user input
 for plugin_num in "${PLUGIN_ARRAY[@]}"; do
     case $plugin_num in
-        1) source $PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ;;
-        2) source $PLUGIN_DIR/zsh-alias-finder/zsh-alias-finder.plugin.zsh ;;
-        3) source $PLUGIN_DIR/ansible/ansible.plugin.zsh ;;
-        4) source $PLUGIN_DIR/sublime/sublime.plugin.zsh ;;
-        5) source $PLUGIN_DIR/zsh-auto-notify/auto-notify.plugin.zsh ;;
-        6) source $PLUGIN_DIR/zsh-bat/zsh-bat.plugin.zsh ;;
-        7) source $PLUGIN_DIR/zsh-colored-man-pages/colored-man-pages.plugin.zsh ;;
-        8) source $PLUGIN_DIR/zsh-colorize-functions/zsh-colorize-functions.plugin.zsh ;;
-        9) source $PLUGIN_DIR/zsh-lazyload/zsh-lazyload.zsh ;;
-        10) source $PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ;;
+        1) install_plugin_dependencies autosuggestions ;;
+        2) install_plugin_dependencies alias-finder ;;
+        3) install_plugin_dependencies ansible ;;
+        4) install_plugin_dependencies subl ;;
+        5) install_plugin_dependencies auto-notify ;;
+        6) install_plugin_dependencies bat ;;
+        7) install_plugin_dependencies colored-man-pages ;;
+        8) install_plugin_dependencies colorize-functions ;;
+        9) install_plugin_dependencies lazyload ;;
+        10) install_plugin_dependencies syntax-highlighting ;;
         *)
             echo "Invalid plugin number: $plugin_num"
             ;;
     esac
-
-    # Install any additional dependencies required by the plugin
-    install_plugin_dependencies "$plugin_num"
 done
 
 # Install Zsh theme, copy config files, and set default shell to Zsh
