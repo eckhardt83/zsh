@@ -96,6 +96,36 @@ function install_sublime {
     echo "Sublime Text 4 has been successfully installed."
 }
 
+# Function to install Zsh
+function install_zsh {
+    if ! command -v zsh &> /dev/null; then
+        echo "Zsh is not installed. Installing Zsh..."
+        case $PACKAGE_MANAGER in
+            apt)
+                sudo apt-get install -y zsh
+                ;;
+            dnf)
+                sudo dnf install -y zsh
+                ;;
+            pacman)
+                sudo pacman -S --noconfirm zsh
+                ;;
+            nix-env -i)
+                echo "Zsh installation on NixOS is not yet supported."
+                return 1
+                ;;
+            *)
+                echo "Unsupported package manager."
+                return 1
+                ;;
+        esac
+        chsh -s "$(command -v zsh)" "$USER"
+        echo "Zsh has been installed and set as the default shell."
+    else
+        echo "Zsh is already installed."
+    fi
+}
+
 # Check which Linux distribution is running
 if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -104,7 +134,7 @@ else
     LINUX_DISTRO="unknown"
 fi
 
-# Determine package manager based on Linux distribution
+# Determine the package manager based on the Linux distribution
 case $LINUX_DISTRO in
     ubuntu | linuxmint | debian | elementary | popos)
         PACKAGE_MANAGER="apt"
@@ -129,6 +159,9 @@ if ! command -v git &> /dev/null; then
     echo "Git is required but not installed. Installing Git..."
     sudo $PACKAGE_MANAGER install git
 fi
+
+# Install Zsh
+install_zsh
 
 # Clone necessary plugins from GitHub
 mkdir -p "$HOME/.config/zsh/plugins"
@@ -198,6 +231,5 @@ sed -i 's/\r$//' "$HOME/.zshrc"
 sed -i 's/\r$//' "$HOME/.p10k.zsh"
 sed -i 's/\r$//' "$HOME/.config/zsh/zshalias"
 install_firacode_nerd_font
-chsh -s "$(command -v zsh)" "$USER"
 
 echo "Setup complete."
