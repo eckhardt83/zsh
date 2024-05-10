@@ -1,129 +1,65 @@
 #!/bin/bash
 
+# Function to install FiraCode Nerd Font
 function install_firacode_nerd_font {
     echo "Installing FiraCode Nerd Font..."
-    local font_dir="$HOME/.local/share/fonts"
-    mkdir -p "$font_dir"
-    wget -P "$font_dir" https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip &&
-    unzip -o "$font_dir/FiraCode.zip" -d "$font_dir" &&
-    fc-cache -f -v "$font_dir"
+    mkdir -p "$HOME/.local/share/fonts"
+    wget -P "$HOME/.local/share/fonts" https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip &&
+    unzip -o "$HOME/.local/share/fonts/FiraCode.zip" -d "$HOME/.local/share/fonts" &&
+    fc-cache -f -v "$HOME/.local/share/fonts"
 }
 
+# Function to copy Zsh configuration files
 function copy_zsh_config {
     echo "Copying Zsh configuration..."
     cp ./zshrc "$HOME/.zshrc"
+    echo "Copying Powerlevel10k configuration..."
     cp ./p10k.zsh "$HOME/.p10k.zsh"
     cp ./zshalias "$HOME/.config/zsh/zshalias"
 }
 
+# Function to install Zsh theme (Powerlevel10k)
 function install_zsh_theme {
-    echo "Installing Zsh theme..."
+    echo "Installing Zsh theme (Powerlevel10k)..."
     local theme_dir="$HOME/.config/zsh/theme"
-    echo "Installing Powerlevel10k theme..."
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$theme_dir/powerlevel10k"
-    echo "Powerlevel10k theme installed."
+    echo "Powerlevel10k theme has been installed."
 }
 
-function install_plugin_dependencies {
-    local plugin_name="$1"
-    case $plugin_name in
-        ansible)
-            if ! command -v ansible &> /dev/null; then
-                read -p "Ansible is required by ansible plugin. Do you want to install it? (y/n): " INSTALL_ANSIBLE
-                if [ "$INSTALL_ANSIBLE" = "y" ]; then
-                    sudo $PACKAGE_MANAGER install ansible
-                fi
-            fi
-            ;;
-        subl)
-            if ! command -v sublime_text &> /dev/null; then
-                install_sublime
-            fi
-            ;;
-        bat)
-            if ! command -v bat &> /dev/null; then
-                read -p "The 'bat' package is required by zsh-bat plugin. Do you want to install it? (y/n): " INSTALL_BAT
-                if [ "$INSTALL_BAT" = "y" ]; then
-                    sudo $PACKAGE_MANAGER install bat
-                fi
-            fi
-            ;;
-        notify-send)
-            if ! command -v notify-send &> /dev/null; then
-                read -p "The 'notify-send' command is required by zsh-auto-notify plugin. Do you want to install it? (y/n): " INSTALL_NOTIFY_SEND
-                if [ "$INSTALL_NOTIFY_SEND" = "y" ]; then
-                    sudo $PACKAGE_MANAGER install libnotify-bin
-                fi
-            fi
-            ;;
-        *)
-            echo "No additional dependencies for plugin: $plugin_name"
-            ;;
-    esac
-}
-
-# Function to install Sublime Text 4 based on the Linux distribution
+# Function to install Sublime Text 4
 function install_sublime {
     if [ -x "$(command -v sublime_text)" ]; then
         echo "Sublime Text 4 is already installed."
         return 0
     fi
 
-    if [ -x "$(command -v apt)" ]; then
-        echo "Detected Ubuntu or Debian-based system. Installing Sublime Text 4."
-        wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-        sudo apt-get install -y apt-transport-https
-        echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-        sudo apt-get update
-        sudo apt-get install -y sublime-text
-
-    elif [ -x "$(command -v pacman)" ]; then
-        echo "Detected Arch Linux. Installing Sublime Text 4."
-        sudo pacman -Syy
-        sudo pacman -S --noconfirm sublime-text
-
-    elif [ -x "$(command -v dnf)" ]; then
-        echo "Detected Fedora. Installing Sublime Text 4."
-        sudo dnf install -y dnf-plugins-core
-        sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
-        sudo dnf install -y sublime-text
-
-    else
-        echo "Unsupported distribution. Cannot install Sublime Text 4."
-        return 1
-    fi
+    case $PACKAGE_MANAGER in
+        apt)
+            echo "Detected Ubuntu or Debian-based system. Installing Sublime Text 4."
+            wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+            sudo apt-get install -y apt-transport-https
+            echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+            sudo apt-get update
+            sudo apt-get install -y sublime-text
+            ;;
+        pacman)
+            echo "Detected Arch Linux. Installing Sublime Text 4."
+            sudo pacman -Syy
+            sudo pacman -S --noconfirm sublime-text
+            ;;
+        dnf)
+            echo "Detected Fedora. Installing Sublime Text 4."
+            sudo dnf install -y dnf-plugins-core
+            sudo dnf config-manager --add-repo https://download.sublimetext.com/rpm/stable/x86_64/sublime-text.repo
+            sudo dnf install -y sublime-text
+            ;;
+        *)
+            echo "Unsupported package manager for Sublime Text 4 installation."
+            return 1
+            ;;
+    esac
 
     echo "Sublime Text 4 has been successfully installed."
-}
-
-# Function to install Zsh
-function install_zsh {
-    if ! command -v zsh &> /dev/null; then
-        echo "Zsh is not installed. Installing Zsh..."
-        case $PACKAGE_MANAGER in
-            apt)
-                sudo apt-get install -y zsh
-                ;;
-            dnf)
-                sudo dnf install -y zsh
-                ;;
-            pacman)
-                sudo pacman -S --noconfirm zsh
-                ;;
-            nix-env -i)
-                echo "Zsh installation on NixOS is not yet supported."
-                return 1
-                ;;
-            *)
-                echo "Unsupported package manager."
-                return 1
-                ;;
-        esac
-        chsh -s "$(command -v zsh)" "$USER"
-        echo "Zsh has been installed and set as the default shell."
-    else
-        echo "Zsh is already installed."
-    fi
 }
 
 # Check which Linux distribution is running
@@ -154,32 +90,16 @@ case $LINUX_DISTRO in
         ;;
 esac
 
-# Ensure Git is installed
+# Ensure Git and Zsh are installed
 if ! command -v git &> /dev/null; then
     echo "Git is required but not installed. Installing Git..."
     sudo $PACKAGE_MANAGER install git
 fi
 
-# Install Zsh
-install_zsh
-
-# Clone necessary plugins from GitHub
-mkdir -p "$HOME/.config/zsh/plugins"
-cd "$HOME/.config/zsh/plugins" || exit
-
-git clone https://github.com/zsh-users/zsh-autosuggestions
-git clone https://github.com/fdellwing/zsh-bat.git
-git clone https://github.com/ael-code/zsh-colored-man-pages.git
-git clone https://github.com/Freed-Wu/zsh-colorize-functions.git
-git clone https://github.com/qoomon/zsh-lazyload.git
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-git clone https://github.com/MenkeTechnologies/zsh-expand.git
-git clone https://github.com/akash329d/zsh-alias-finder
-git clone https://github.com/sparsick/ansible-zsh
-git clone https://github.com/valentinocossar/sublime.git
-git clone https://github.com/MichaelAquilina/zsh-auto-notify.git
-
-echo "Plugins are installed successfully."
+if ! command -v zsh &> /dev/null; then
+    echo "Zsh is required but not installed. Installing Zsh..."
+    sudo $PACKAGE_MANAGER install zsh
+fi
 
 # Prompt user to select plugins for installation
 echo "Available plugins:"
@@ -193,43 +113,45 @@ echo "7. Colored Man Pages"
 echo "8. Colorize Functions"
 echo "9. Lazyload"
 echo "10. Syntax Highlighting"
-echo "11. Install All"
+echo "11. Install all plugins"
 
-read -p "Enter the numbers of the plugins you want to install (e.g., '1 3 10' or '11' for all): " PLUGIN_CHOICES
+read -p "Enter the numbers of the plugins you want to install (e.g., '1 3 10'): " PLUGIN_CHOICES
 
 # Convert input string into an array of plugin numbers
 IFS=' ' read -ra PLUGIN_ARRAY <<< "$PLUGIN_CHOICES"
 
-# If "11" (Install All) is selected, set PLUGIN_ARRAY to all available plugin numbers
-if [[ " ${PLUGIN_ARRAY[@]} " =~ " 11 " ]]; then
-    PLUGIN_ARRAY=(1 2 3 4 5 6 7 8 9 10)
-fi
-
 # Load selected plugins based on user input
 for plugin_num in "${PLUGIN_ARRAY[@]}"; do
     case $plugin_num in
-        1) install_plugin_dependencies autosuggestions ;;
-        2) install_plugin_dependencies alias-finder ;;
-        3) install_plugin_dependencies ansible ;;
-        4) install_plugin_dependencies subl ;;
-        5) install_plugin_dependencies auto-notify ;;
-        6) install_plugin_dependencies bat ;;
-        7) install_plugin_dependencies colored-man-pages ;;
-        8) install_plugin_dependencies colorize-functions ;;
-        9) install_plugin_dependencies lazyload ;;
-        10) install_plugin_dependencies syntax-highlighting ;;
+        1) git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh/plugins/zsh-autosuggestions" ;;
+        2) git clone https://github.com/akash329d/zsh-alias-finder "$HOME/.config/zsh/plugins/zsh-alias-finder" ;;
+        3) git clone https://github.com/sparsick/ansible-zsh "$HOME/.config/zsh/plugins/ansible" ;;
+        4) git clone https://github.com/valentinocossar/sublime.git "$HOME/.config/zsh/plugins/sublime"; install_sublime ;;
+        5) git clone https://github.com/MichaelAquilina/zsh-auto-notify.git "$HOME/.config/zsh/plugins/zsh-auto-notify" ;;
+        6) git clone https://github.com/fdellwing/zsh-bat.git "$HOME/.config/zsh/plugins/zsh-bat" ;;
+        7) git clone https://github.com/ael-code/zsh-colored-man-pages.git "$HOME/.config/zsh/plugins/zsh-colored-man-pages" ;;
+        8) git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh/plugins/zsh-colorize-functions"; install_sublime ;;
+        9) git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh/plugins/zsh-lazyload" ;;
+        10) git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh/plugins/zsh-syntax-highlighting" ;;
+        11)
+            for plugin in autosuggestions alias-finder ansible sublime auto-notify bat colored-man-pages colorize-functions lazyload syntax-highlighting; do
+                git clone "https://github.com/zsh-users/zsh-${plugin}.git" "$HOME/.config/zsh/plugins/zsh-${plugin}"
+            done
+            install_sublime ;;
         *)
             echo "Invalid plugin number: $plugin_num"
             ;;
     esac
 done
 
-# Install Zsh theme, copy config files, and set default shell to Zsh
+# Install Zsh theme and configuration files
 install_zsh_theme
 copy_zsh_config
-sed -i 's/\r$//' "$HOME/.zshrc"
-sed -i 's/\r$//' "$HOME/.p10k.zsh"
-sed -i 's/\r$//' "$HOME/.config/zsh/zshalias"
+
+# Install FiraCode Nerd Font
 install_firacode_nerd_font
 
-echo "Setup complete."
+# Set Zsh as default shell
+chsh -s "$(which zsh)" "$USER"
+
+echo "Plugins and configurations have been installed successfully."
