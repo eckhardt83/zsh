@@ -123,9 +123,9 @@ IFS=' ' read -ra PLUGIN_ARRAY <<< "$PLUGIN_CHOICES"
 # Load selected plugins based on user input
 for plugin_num in "${PLUGIN_ARRAY[@]}"; do
     case $plugin_num in
-        1) git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh/plugins/zsh-autosuggestions" ;;
-        2) git clone https://github.com/akash329d/zsh-alias-finder "$HOME/.config/zsh/plugins/zsh-alias-finder" ;;
-        3) git clone https://github.com/sparsick/ansible-zsh "$HOME/.config/zsh/plugins/ansible" ;;
+        1) git clone https://github.com/zsh-users/zsh-autosuggestions.git "$HOME/.config/zsh/plugins/zsh-autosuggestions" ;;
+        2) git clone https://github.com/akash329d/zsh-alias-finder.git "$HOME/.config/zsh/plugins/zsh-alias-finder" ;;
+        3) git clone https://github.com/sparsick/ansible-zsh.git "$HOME/.config/zsh/plugins/ansible" ;;
         4) git clone https://github.com/valentinocossar/sublime.git "$HOME/.config/zsh/plugins/sublime"; install_sublime ;;
         5) git clone https://github.com/MichaelAquilina/zsh-auto-notify.git "$HOME/.config/zsh/plugins/zsh-auto-notify" ;;
         6) git clone https://github.com/fdellwing/zsh-bat.git "$HOME/.config/zsh/plugins/zsh-bat" ;;
