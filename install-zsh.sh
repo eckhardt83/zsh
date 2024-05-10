@@ -123,19 +123,20 @@ IFS=' ' read -ra PLUGIN_ARRAY <<< "$PLUGIN_CHOICES"
 # Load selected plugins based on user input
 for plugin_num in "${PLUGIN_ARRAY[@]}"; do
     case $plugin_num in
-        1) git clone https://github.com/zsh-users/zsh-autosuggestions.git "$HOME/.config/zsh/plugins/zsh-autosuggestions" ;;
-        2) git clone https://github.com/akash329d/zsh-alias-finder.git "$HOME/.config/zsh/plugins/zsh-alias-finder" ;;
-        3) git clone https://github.com/sparsick/ansible-zsh.git "$HOME/.config/zsh/plugins/ansible" ;;
-        4) git clone https://github.com/valentinocossar/sublime.git "$HOME/.config/zsh/plugins/sublime"; install_sublime ;;
+        1) git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.config/zsh/plugins/zsh-autosuggestions" ;;
+        2) git clone https://github.com/akash329d/zsh-alias-finder "$HOME/.config/zsh/plugins/zsh-alias-finder" ;;
+        3) git clone https://github.com/sparsick/ansible-zsh "$HOME/.config/zsh/plugins/ansible" ;;
+        4) git clone https://github.com/valentinocossar/sublime.git "$HOME/.config/zsh/plugins/sublime" ;;
         5) git clone https://github.com/MichaelAquilina/zsh-auto-notify.git "$HOME/.config/zsh/plugins/zsh-auto-notify" ;;
         6) git clone https://github.com/fdellwing/zsh-bat.git "$HOME/.config/zsh/plugins/zsh-bat" ;;
         7) git clone https://github.com/ael-code/zsh-colored-man-pages.git "$HOME/.config/zsh/plugins/zsh-colored-man-pages" ;;
-        8) git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh/plugins/zsh-colorize-functions"; install_sublime ;;
+        8) git clone https://github.com/Freed-Wu/zsh-colorize-functions.git "$HOME/.config/zsh/plugins/zsh-colorize-functions" ;;
         9) git clone https://github.com/qoomon/zsh-lazyload.git "$HOME/.config/zsh/plugins/zsh-lazyload" ;;
         10) git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.config/zsh/plugins/zsh-syntax-highlighting" ;;
         11)
             for plugin in autosuggestions alias-finder ansible sublime auto-notify bat colored-man-pages colorize-functions lazyload syntax-highlighting; do
                 git clone "https://github.com/zsh-users/zsh-${plugin}.git" "$HOME/.config/zsh/plugins/zsh-${plugin}"
+                sleep 5  # Add a 5-second delay between each plugin installation
             done
             install_sublime ;;
         *)
@@ -144,14 +145,14 @@ for plugin_num in "${PLUGIN_ARRAY[@]}"; do
     esac
 done
 
-# Install Zsh theme and configuration files
+# Install Zsh theme and copy configuration files
 install_zsh_theme
 copy_zsh_config
 
 # Install FiraCode Nerd Font
 install_firacode_nerd_font
 
-# Set Zsh as default shell
+# Set Zsh as the default shell
 chsh -s "$(which zsh)" "$USER"
 
 echo "Plugins and configurations have been installed successfully."
